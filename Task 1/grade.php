@@ -1,5 +1,5 @@
 <?php
-$grade = " ";
+$grade = null;
 if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
 {
   $physics = $_POST['physics'];
@@ -66,7 +66,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
                 <input type="text" class="form-control w-25 mb-2" name="computer" id="computer" aria-describedby="helpId" placeholder="">
                 <button>Calculate grade</button>
             </div>
-            <div class="w-100 <?php echo ($grade == " ")? "d-none" : "d-flex" ?> justify-content-center">
+            <div class="w-100 <?php echo ($grade == null)? "d-none" : "d-flex" ?> justify-content-center">
                 <div class="alert alert-<?php echo ($grade == "Wrong input") ? "danger" : "primary" ?>" role="alert">
                     <strong> <?php echo $grade;?> </strong>
                 </div>
