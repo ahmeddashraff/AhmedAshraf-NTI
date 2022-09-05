@@ -1,3 +1,19 @@
+<?php 
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
+    {
+      $firstNum = $_POST['number_one'];
+      $secondNum = $_POST['number_two'];
+      if($_POST['addition'] == "+")
+      {
+        $message = $firstNum + $secondNum;
+      }
+      else
+      {
+        $message = "nothing";
+      }
+    }
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -20,9 +36,17 @@
                     <input type="text" class="form-control w-25" name="number_one" id="number_one" placeholder="">
                     <input type="text" class="form-control w-25" name="number_two" id="number_two" placeholder="">
                 </div>
-                <button class="btn bg-danger mt-5 text-white">ayhaga</button>
+                <div>
+                    <input type="button" class="form-control" name='addition' id="addition" value="+">
+                    <input type="button" class="form-control" name="subtraction" id="subtraction" value="-">
+                    <input type="button" class="form-control" name="multiplication" id="multiplication" value="*">
+                    <input type="button" class="form-control" name="division" id="division" value="/">
+                    <button> ayhaga</button>
+                </div>
+
             </div>
         </form>
+        <?php echo $message; ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
