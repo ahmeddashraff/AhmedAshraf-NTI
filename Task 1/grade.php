@@ -11,27 +11,27 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
 
   if($grade >=90)
   {
-    $grade .= ' A';
+    $grade .= '% A';
   }
   elseif(90 > $grade && 80 <= $grade)
   {
-    $grade .= ' B';
+    $grade .= '% B';
   }
   elseif(80 > $grade && 70 <= $grade)
   {
-    $grade .= ' C';
+    $grade .= '% C';
   }
   elseif(70 > $grade && 60 <= $grade)
   {
-    $grade .= ' D';
+    $grade .= '% D';
   }
   elseif(60 > $grade && 50 <= $grade)
   {
-    $grade .= ' D';
+    $grade .= '% D';
   }
   else
   {
-    $grade .= ' F';
+    $grade .= '% F';
   }
 }
 
@@ -58,8 +58,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
                 <input type="text" class="form-control w-25 mb-2" name="computer" id="computer" aria-describedby="helpId" placeholder="">
                 <button>Calculate grade</button>
             </div>
-            <div class="alert alert-primary" role="alert">
-            <strong> <?php echo $grade;?> </strong>
+            <div class="w-100 d-flex justify-content-center">
+                <div class="alert alert-primary" role="alert">
+                    <strong> <?php echo $grade;?> </strong>
+                </div>
         </div>
         </form>
 
