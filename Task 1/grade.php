@@ -7,7 +7,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
   $biology = $_POST['biology'];
   $mathematics = $_POST['mathematics'];
   $computer = $_POST['computer'];
-  $message = (($computer + $physics + $chemistry + $biology + $computer) / 500) * 100;
+  $grade = (($computer + $physics + $chemistry + $biology + $computer) / 500) * 100;
+
+  if($grade >=90)
+  {
+    $grade .= ' A';
+  }
+  elseif(90 > $grade && 80 <= $grade)
+  {
+    $grade .= ' B';
+  }
+  elseif(80 > $grade && 70 <= $grade)
+  {
+    $grade .= ' C';
+  }
+  elseif(70 > $grade && 60 <= $grade)
+  {
+    $grade .= ' D';
+  }
+  elseif(60 > $grade && 50 <= $grade)
+  {
+    $grade .= ' D';
+  }
+  else
+  {
+    $grade .= ' F';
+  }
 }
 
 ?>
@@ -31,11 +56,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
                 <input type="text" class="form-control w-25 mb-2" name="biology" id="biology" aria-describedby="helpId" placeholder="">
                 <input type="text" class="form-control w-25 mb-2" name="mathematics" id="mathematics" aria-describedby="helpId" placeholder="">
                 <input type="text" class="form-control w-25 mb-2" name="computer" id="computer" aria-describedby="helpId" placeholder="">
-            </div>ayhaga
-            <button></button>
+                <button>Calculate grade</button>
+            </div>
+            <div class="alert alert-primary" role="alert">
+            <strong> <?php echo $grade;?> </strong>
+        </div>
         </form>
 
-
+        
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
