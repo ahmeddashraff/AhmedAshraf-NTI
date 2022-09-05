@@ -18,13 +18,9 @@
       {
         $message = (int)$firstNum * (int)$secondNum;
       }
-      elseif($operand == "/")
-      {
-        $message = (int)$firstNum / (int)$secondNum;
-      }
       else
       {
-        $message = "nothing have been chosen";
+        $message = (int)$firstNum / (int)$secondNum;
       }
     }
 ?>
@@ -48,8 +44,8 @@
         <form method = "post" class="w-100">
             <div class="form-group d-flex flex-column justify-content-center align-items-center w-100">
                 <div class="w-100 d-flex justify-content-around">
-                    <input type="text" class="form-control w-25" name="number_one" id="number_one" value="<?php echo $_POST['number_one']? $_POST['number_one'] : '' ?>">
-                    <input type="text" class="form-control w-25" name="number_two" id="number_two" value="<?php echo $_POST['number_two'] ? $_POST['number_two'] : '' ?>">
+                    <input type="text" class="form-control w-25" name="number_one" id="number_one" value="<?php echo isset($_POST['number_one'])? $_POST['number_one'] : '' ?>">
+                    <input type="text" class="form-control w-25" name="number_two" id="number_two" value="<?php echo isset($_POST['number_two']) ? $_POST['number_two'] : '' ?>">
                 </div>
                 <div>
                     <input type="submit" class="form-control" name='operand' id="addition" value="+">
@@ -59,8 +55,12 @@
                 </div>
 
             </div>
+            <div class="w-100 d-flex justify-content-center">
+                <div class="alert alert-primary" role="alert">
+                    <strong><?php echo $message; ?> </strong>
+                </div>
+        </div>
         </form>
-        <?php echo $message; ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
