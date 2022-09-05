@@ -1,15 +1,30 @@
 <?php 
+    $message = "";
     if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
     {
       $firstNum = $_POST['number_one'];
       $secondNum = $_POST['number_two'];
-      if($_POST['addition'] == "+")
+      $operand = $_POST['operand'];
+
+      if($operand == "+")
       {
         $message = $firstNum + $secondNum;
       }
+      elseif($operand == "-")
+      {
+        $message = $firstNum - $secondNum;
+      }
+      elseif($operand == "*")
+      {
+        $message = $firstNum * $secondNum;
+      }
+      elseif($operand == "/")
+      {
+        $message = $firstNum / $secondNum;
+      }
       else
       {
-        $message = "nothing";
+        $message = "nothing have been chosen";
       }
     }
 ?>
@@ -37,10 +52,10 @@
                     <input type="text" class="form-control w-25" name="number_two" id="number_two" placeholder="">
                 </div>
                 <div>
-                    <input type="button" class="form-control" name='addition' id="addition" value="+">
-                    <input type="button" class="form-control" name="subtraction" id="subtraction" value="-">
-                    <input type="button" class="form-control" name="multiplication" id="multiplication" value="*">
-                    <input type="button" class="form-control" name="division" id="division" value="/">
+                    <input type="submit" class="form-control" name='operand' id="addition" value="+">
+                    <input type="submit" class="form-control" name="operand" id="subtraction" value="-">
+                    <input type="submit" class="form-control" name="operand" id="multiplication" value="*">
+                    <input type="submit" class="form-control" name="operand" id="division" value="/">
                     <button> ayhaga</button>
                 </div>
 
