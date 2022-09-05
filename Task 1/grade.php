@@ -1,5 +1,5 @@
 <?php
-
+$grade = " ";
 if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
 {
   $physics = $_POST['physics'];
@@ -7,7 +7,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
   $biology = $_POST['biology'];
   $mathematics = $_POST['mathematics'];
   $computer = $_POST['computer'];
-  $grade = (($computer + $physics + $chemistry + $biology + $computer) / 500) * 100;
+  $grade = (((int)$mathematics + (int)$physics + (int)$chemistry + (int)$biology + (int)$computer) / 500) * 100;
 
   if($grade >=90)
   {
@@ -58,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
                 <input type="text" class="form-control w-25 mb-2" name="computer" id="computer" aria-describedby="helpId" placeholder="">
                 <button>Calculate grade</button>
             </div>
-            <div class="w-100 d-flex justify-content-center">
+            <div class="w-100 <?php echo ($grade == " ")? "d-none" : "d-flex" ?> justify-content-center">
                 <div class="alert alert-primary" role="alert">
                     <strong> <?php echo $grade;?> </strong>
                 </div>
