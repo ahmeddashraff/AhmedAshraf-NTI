@@ -8,19 +8,19 @@
 
       if($operand == "+")
       {
-        $message = $firstNum + $secondNum;
+        $message = (int)$firstNum + (int)$secondNum;
       }
       elseif($operand == "-")
       {
-        $message = $firstNum - $secondNum;
+        $message = (int)$firstNum - (int)$secondNum;
       }
       elseif($operand == "*")
       {
-        $message = $firstNum * $secondNum;
+        $message = (int)$firstNum * (int)$secondNum;
       }
       elseif($operand == "/")
       {
-        $message = $firstNum / $secondNum;
+        $message = (int)$firstNum / (int)$secondNum;
       }
       else
       {
@@ -48,15 +48,14 @@
         <form method = "post" class="w-100">
             <div class="form-group d-flex flex-column justify-content-center align-items-center w-100">
                 <div class="w-100 d-flex justify-content-around">
-                    <input type="text" class="form-control w-25" name="number_one" id="number_one" placeholder="">
-                    <input type="text" class="form-control w-25" name="number_two" id="number_two" placeholder="">
+                    <input type="text" class="form-control w-25" name="number_one" id="number_one" value="<?php echo $_POST['number_one']? $_POST['number_one'] : '' ?>">
+                    <input type="text" class="form-control w-25" name="number_two" id="number_two" value="<?php echo $_POST['number_two'] ? $_POST['number_two'] : '' ?>">
                 </div>
                 <div>
                     <input type="submit" class="form-control" name='operand' id="addition" value="+">
                     <input type="submit" class="form-control" name="operand" id="subtraction" value="-">
                     <input type="submit" class="form-control" name="operand" id="multiplication" value="*">
                     <input type="submit" class="form-control" name="operand" id="division" value="/">
-                    <button> ayhaga</button>
                 </div>
 
             </div>
