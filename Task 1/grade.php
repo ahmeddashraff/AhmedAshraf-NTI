@@ -9,30 +9,38 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
   $computer = $_POST['computer'];
   $grade = (((int)$mathematics + (int)$physics + (int)$chemistry + (int)$biology + (int)$computer) / 500) * 100;
 
-  if($grade >=90)
+  if($physics > 100 || $chemistry > 100 || $biology > 100 || $mathematics > 100 || $computer > 100)
   {
-    $grade .= '% A';
+    $grade = "Wrong input";
   }
-  elseif(90 > $grade && 80 <= $grade)
-  {
-    $grade .= '% B';
+  else{
+    if($grade >=90)
+    {
+      $grade .= '% A';
+    }
+    elseif(90 > $grade && 80 <= $grade)
+    {
+      $grade .= '% B';
+    }
+    elseif(80 > $grade && 70 <= $grade)
+    {
+      $grade .= '% C';
+    }
+    elseif(70 > $grade && 60 <= $grade)
+    {
+      $grade .= '% D';
+    }
+    elseif(60 > $grade && 50 <= $grade)
+    {
+      $grade .= '% D';
+    }
+    else
+    {
+      $grade .= '% F';
+    }
   }
-  elseif(80 > $grade && 70 <= $grade)
-  {
-    $grade .= '% C';
-  }
-  elseif(70 > $grade && 60 <= $grade)
-  {
-    $grade .= '% D';
-  }
-  elseif(60 > $grade && 50 <= $grade)
-  {
-    $grade .= '% D';
-  }
-  else
-  {
-    $grade .= '% F';
-  }
+
+
 }
 
 ?>
@@ -59,7 +67,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
                 <button>Calculate grade</button>
             </div>
             <div class="w-100 <?php echo ($grade == " ")? "d-none" : "d-flex" ?> justify-content-center">
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-<?php echo ($grade == "Wrong input") ? "danger" : "primary" ?>" role="alert">
                     <strong> <?php echo $grade;?> </strong>
                 </div>
         </div>
