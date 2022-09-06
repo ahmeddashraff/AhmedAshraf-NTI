@@ -8,19 +8,19 @@
 
       if($operand == "+")
       {
-        $message = (int)$firstNum + (int)$secondNum;
+        $message = (float)$firstNum + (float)$secondNum;
       }
       elseif($operand == "-")
       {
-        $message = (int)$firstNum - (int)$secondNum;
+        $message = (float)$firstNum - (float)$secondNum;
       }
       elseif($operand == "*")
       {
-        $message = (int)$firstNum * (int)$secondNum;
+        $message = (float)$firstNum * (float)$secondNum;
       }
       else
       {
-        $message = (int)$firstNum / (int)$secondNum;
+        $message = (float)$firstNum / (float)$secondNum;
       }
     }
 ?>
@@ -56,7 +56,7 @@
 
             </div>
             <div class="w-100 d-flex justify-content-center">
-                <div class="alert alert-primary" role="alert">
+                <div class="alert alert-primary <?php echo ($message == "")? "d-none" : "d-flex" ?>" role="alert">
                     <strong><?php echo $message; ?> </strong>
                 </div>
         </div>
