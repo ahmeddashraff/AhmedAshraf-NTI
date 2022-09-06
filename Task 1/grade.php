@@ -59,11 +59,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
   <body>
         <form method="post">
             <div class="form-group d-flex justify-content-center mt-5 flex-column align-items-center">
-                <input type="text" class="form-control w-25 mb-2" name="physics" id="physics" aria-describedby="helpId" placeholder="">
-                <input type="text" class="form-control w-25 mb-2" name="chemistry" id="chemistry" aria-describedby="helpId" placeholder="">
-                <input type="text" class="form-control w-25 mb-2" name="biology" id="biology" aria-describedby="helpId" placeholder="">
-                <input type="text" class="form-control w-25 mb-2" name="mathematics" id="mathematics" aria-describedby="helpId" placeholder="">
-                <input type="text" class="form-control w-25 mb-2" name="computer" id="computer" aria-describedby="helpId" placeholder="">
+                <input type="text" class="form-control w-25 mb-2" name="physics" id="physics" aria-describedby="helpId" placeholder="physics">
+                <input type="text" class="form-control w-25 mb-2" name="chemistry" id="chemistry" aria-describedby="helpId" placeholder="chemistry">
+                <input type="text" class="form-control w-25 mb-2" name="biology" id="biology" aria-describedby="helpId" placeholder="biology">
+                <input type="text" class="form-control w-25 mb-2" name="mathematics" id="mathematics" aria-describedby="helpId" placeholder="mathematics">
+                <input type="text" class="form-control w-25 mb-2" name="computer" id="computer" aria-describedby="helpId" placeholder="computer">
                 <button>Calculate grade</button>
             </div>
             <div class="w-100 <?php echo ($grade == null)? "d-none" : "d-flex" ?> justify-content-center">
