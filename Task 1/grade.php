@@ -1,15 +1,12 @@
 <?php
-$grade = null;
 if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
 {
-  $physics = $_POST['physics'];
-  $chemistry = $_POST['chemistry'];
-  $biology = $_POST['biology'];
-  $mathematics = $_POST['mathematics'];
-  $computer = $_POST['computer'];
-  $grade = (((int)$mathematics + (int)$physics + (int)$chemistry + (int)$biology + (int)$computer) / 500) * 100;
+  define("totalGrades", 500);
+  define("percentage", 100);
 
-  if($physics > 100 || $chemistry > 100 || $biology > 100 || $mathematics > 100 || $computer > 100)
+  $grade = (((float)$_POST['mathematics'] + (float)$_POST['physics'] + (float)$_POST['chemistry'] + (float)$_POST['biology'] + (float)$_POST['computer']) / totalGrades) * percentage; // 500 and 100 should be constants
+
+  if($_POST['physics'] > 100 || $_POST['chemistry'] > 100 || $_POST['biology'] > 100 || $_POST['mathematics'] > 100 || $_POST['computer'] > 100)
   {
     $grade = "Wrong input";
   }
@@ -57,6 +54,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
+    <h1 class = "text-center mt-5 text-primary">Grade Calculator</h1>
         <form method="post">
             <div class="form-group d-flex justify-content-center mt-5 flex-column align-items-center">
                 <input type="text" class="form-control w-25 mb-2" name="physics" id="physics" aria-describedby="helpId" placeholder="physics">
@@ -64,11 +62,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST)
                 <input type="text" class="form-control w-25 mb-2" name="biology" id="biology" aria-describedby="helpId" placeholder="biology">
                 <input type="text" class="form-control w-25 mb-2" name="mathematics" id="mathematics" aria-describedby="helpId" placeholder="mathematics">
                 <input type="text" class="form-control w-25 mb-2" name="computer" id="computer" aria-describedby="helpId" placeholder="computer">
-                <button>Calculate grade</button>
+                <button class = "btn btn-primary">Calculate grade</button>
             </div>
             <div class="w-100 <?php echo ($grade == null)? "d-none" : "d-flex" ?> justify-content-center">
                 <div class="alert alert-<?php echo ($grade == "Wrong input") ? "danger" : "primary" ?>" role="alert">
-                    <strong> <?php echo $grade;?> </strong>
+                    <strong> <?php echo $grade ?? "";?> </strong>
                 </div>
         </div>
         </form>
