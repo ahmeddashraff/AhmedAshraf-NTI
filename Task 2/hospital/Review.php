@@ -1,14 +1,31 @@
 <?php     include "layouts/session.php";
 
-$total = 0;
+$totalInNum = 0;
+$totalInWords = array();
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && $_POST)
 {
     foreach($_POST as $surveyValues)
     {
-        $total += (int)$surveyValues;
+        if($surveyValues == 0)
+        {
+            $totalInWords[] = 'Bad';
+        }
+        elseif($surveyValues == 3)
+        {
+            $totalInWords[] = 'Good';
+        }
+        elseif($surveyValues == 5)
+        {
+            $totalInWords[] = 'Very good';
+        }
+        else
+        {
+            $totalInWords[] = 'Excellent';
+        }
+        $totalInNum += (int)$surveyValues;
     }
-    $_SESSION['result'] = $total;
+    $_SESSION['result'] = ['resultInWords'=>$totalInWords, 'resultInNum'=>$totalInNum];
     header('location:Result.php');
 }
 
