@@ -12,10 +12,11 @@
         else
         {
             $_SESSION['phone_number'] = $_POST['phone_number'];
-            header('location:Review.php');
+            header('location:Review.php'); die;
         }
     }
 
+    //note: it is not neccesary to use sessions if I have a form with action attribute that I can use its inputs
 ?>
 
 

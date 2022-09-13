@@ -41,13 +41,22 @@
     <?php
         if($_SESSION['result']['resultInNum'] < 25)
         {
-            echo " <div class='alert alert-danger text-center alert-dismissible fade show' role='alert'>
+            echo "    <div class='alert alert-info text-center alert-dismissible fade show' role='alert'>
+                        Total Result is <strong class='text-danger'>BAD</strong>
+
+                    </div>
+ <div class='alert alert-danger text-center alert-dismissible fade show' role='alert'>
                          We will call you later on this phone <strong>{$_SESSION['phone_number']}</strong>
                     </div>";
         }
         else
         {
-            echo " <div class='alert alert-success text-center alert-dismissible fade show' role='alert'>
+            echo "
+            <div class='alert alert-info text-center alert-dismissible fade show' role='alert'>
+                        Total Result is <strong class='text-info'>GOOD</strong>
+
+                    </div> 
+            <div class='alert alert-success text-center alert-dismissible fade show' role='alert'>
                          THANKS!
                     </div>";
         }
