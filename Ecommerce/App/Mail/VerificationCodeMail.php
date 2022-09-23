@@ -6,7 +6,7 @@ class VerificationCodeMail extends Mail {
     public function send($mailTo,$subject,$body) :bool
     {
         try {
-            $this->mail->setFrom(self::MAILUSERNAME, 'Ecommerce Team');
+          // $this->mail->setFrom('', 'Ecommerce Team');
             $this->mail->addAddress($mailTo);
             $this->mail->isHTML(true);                                  //Set email format to HTML
             $this->mail->Subject = $subject;
@@ -15,7 +15,7 @@ class VerificationCodeMail extends Mail {
             // echo 'Message has been sent';
             return true;
         }catch(Exception $e){
-            // echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
+            echo "Message could not be sent. Mailer Error: {$this->mail->ErrorInfo}";
             return false;
 
         }

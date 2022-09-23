@@ -350,6 +350,16 @@ class User extends Model implements HasCrud {
         return $stmt->execute();
     }
     
+    public function updateName(): bool
+    {
+        $query = "UPDATE users SET first_name = ? , last_name = ? WHERE email = ?";
+        $stmt = $this->conn->prepare($query);
+        if(! $stmt){
+            return false;
+        }
+        $stmt->bind_param('sss',$this->first_name,$this->last_name,$this->email);
+        return $stmt->execute();   
+    }
 
     public function get()
     {
@@ -363,7 +373,5 @@ class User extends Model implements HasCrud {
         return $stmt->get_result();
     }
     
-    
 }
-
 

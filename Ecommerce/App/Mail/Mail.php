@@ -5,8 +5,8 @@ use PHPMailer\PHPMailer\SMTP;
 
 abstract class Mail {
     protected const MAILHOST = 'smtp.mailtrap.io';
-    protected const MAILUSERNAME = '60c14ec4010d80';
-    protected const MAILPASSWORD = '6a7baf5c5673b1';
+    protected const MAILUSERNAME = '4807cefd210fec';
+    protected const MAILPASSWORD = '45fe21faab77c8';
     protected const MAILPORT = 587;
     protected const MAILENCRYPTION = PHPMailer::ENCRYPTION_STARTTLS;
     protected PHPMailer $mail;

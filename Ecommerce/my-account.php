@@ -2,12 +2,16 @@
 
 use App\Database\Models\User;
 use App\Services\Media;
+use App\Http\Requests\Validation;
 
 $title = 'my account';
 include "layouts/header.php";
 include "App/Http/Middlewares/Auth.php";
 include "layouts/navbar.php";
 include "layouts/breadcrumb.php";
+
+$validation = new Validation;
+$user = new User;
 if(isset($_POST['update-image'])){
     if($_FILES['image']['error'] == 0){
         $media = new Media;
@@ -19,7 +23,7 @@ if(isset($_POST['update-image'])){
                 if($_SESSION['user']->image != 'default.jpg'){
                     $media->delete('assets/img/users/'.$_SESSION['user']->image);
                 }
-                $user = new User;
+                
                 $user->setImage($media->getFileName())->setEmail($_SESSION['user']->email);
                 if($user->updateImage()){
                     $_SESSION['user']->image = $media->getFileName();
@@ -30,6 +34,54 @@ if(isset($_POST['update-image'])){
         }   
     }
 }
+if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
+    if(isset($_POST['first_name']) || isset($_POST['last_name']) || isset($_POST['gender']))
+    {
+        $validation->setValue($_POST['first_name'] ?? "")->setValueName('first name')
+        ->required()->between(2,32);
+        $validation->setValue($_POST['last_name'] ?? "")->setValueName('last name')
+        ->required()->between(2,32);
+        $validation->setValue($_POST['gender'] ?? "")->setValueName('gender')
+        ->required()->in(['m','f']);
+        // print_r($validation->getErrors());
+        if(empty($validation->getErrors()))
+        {        
+            
+            $user -> setEmail($_SESSION['user']->email);
+            $user->setFirst_name($_POST['first_name']);
+            $user->setLast_name($_POST['last_name']);
+            $user->setGender($_POST['gender']);
+    
+    
+            $_SESSION['user'] -> first_name = $_POST['first_name'];
+            $_SESSION['user'] -> last_name = $_POST['last_name'];
+    
+            if($user->updateName())
+            {
+                echo "okkkkk";
+            }
+            else
+            {
+                echo "ya kharaby";
+            }
+        }
+        else{
+            echo "<p>something wrong happened</p>";
+        }
+    }
+
+    if(isset($_POST['change_password_button']))
+    {
+        $validation->setValue($_POST['old_password'] ?? "")->setValueName('password')
+        ->required()->regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/","Wrong password");
+        $validation->setValue($_POST['new_password'] ?? "")->setValueName('password')
+        ->required()->regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/","Minimum 8 and maximum 32 characters, at least one uppercase letter, one lowercase letter, one number and one special character:")
+        ->confirmed($_POST['password_confirmation']);
+        $validation->setValue($_POST['password_confirmation'] ?? "")->setValueName('password confirmation');
+
+    }
+}
+
 ?>
 <div class="checkout-area pb-80 pt-100">
     <div class="container">
@@ -86,6 +138,7 @@ if(isset($_POST['update-image'])){
                                                         <label>First Name</label>
                                                         <input type="text" name="first_name"
                                                             value="<?= $_SESSION['user']->first_name ?>">
+                                                        <?= $validation->getMessage('first name') ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-md-6">
@@ -93,6 +146,7 @@ if(isset($_POST['update-image'])){
                                                         <label>Last Name</label>
                                                         <input type="text" name="last_name"
                                                             value="<?= $_SESSION['user']->last_name ?>">
+                                                        <?= $validation->getMessage('last name') ?>
                                                     </div>
                                                 </div>
 
@@ -103,12 +157,13 @@ if(isset($_POST['update-image'])){
                                                             <option <?= $_SESSION['user']->gender == 'm' ? 'selected' : '' ?> value="m">Male</option>
                                                             <option <?= $_SESSION['user']->gender == 'f' ? 'selected' : '' ?> value="f">Female</option>
                                                         </select>
+                                                        <?= $validation->getMessage('gender') ?>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="billing-back-btn">
                                                 <div class="billing-btn">
-                                                    <button type="submit">Update</button>
+                                                    <input type="submit" name = "change_password_button" value = "update">
                                                 </div>
                                             </div>
                                         </form>
@@ -126,19 +181,24 @@ if(isset($_POST['update-image'])){
                                     <div class="billing-information-wrapper">
                                         <div class="account-info-wrapper">
                                             <h4>Change Password</h4>
-                                            <h5>Your Password</h5>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="billing-info">
+                                                    <label>Your Password</label>
+                                                    <input name='old_password' type="password">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="billing-info">
                                                     <label>Password</label>
-                                                    <input type="password">
+                                                    <input name='new_password' type="password">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="billing-info">
                                                     <label>Password Confirm</label>
-                                                    <input type="password">
+                                                    <input name='password_confirmation' type="password">
                                                 </div>
                                             </div>
                                         </div>
