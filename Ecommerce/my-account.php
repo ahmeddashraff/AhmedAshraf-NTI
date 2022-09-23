@@ -35,6 +35,8 @@ if(isset($_POST['update-image'])){
     }
 }
 if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
+
+
     if(isset($_POST['first_name']) || isset($_POST['last_name']) || isset($_POST['gender']))
     {
         $validation->setValue($_POST['first_name'] ?? "")->setValueName('first name')
@@ -70,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
         }
     }
 
-    if(isset($_POST['change_password_button']))
+    if(isset($_POST['change_password']))
     {
         $validation->setValue($_POST['old_password'] ?? "")->setValueName('password')
         ->required()->regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/","Wrong password");
@@ -78,7 +80,20 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
         ->required()->regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/","Minimum 8 and maximum 32 characters, at least one uppercase letter, one lowercase letter, one number and one special character:")
         ->confirmed($_POST['password_confirmation']);
         $validation->setValue($_POST['password_confirmation'] ?? "")->setValueName('password confirmation');
+        if(empty($validation->getErrors()))
+        {
+            $user->setPassword($_POST['new_password'])->setEmail($_SESSION['user']->email);
 
+            if($user->updatePassword())
+            {
+                echo "changed";
+                //el password byet3'yar 3ady, fadel details zy en yroh el login page w fe alert yzharlo
+            }
+            else
+            {
+                echo "cannot change password";
+            }
+        }
     }
 }
 
@@ -163,7 +178,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
                                             </div>
                                             <div class="billing-back-btn">
                                                 <div class="billing-btn">
-                                                    <input type="submit" name = "change_password_button" value = "update">
+                                                    <input type="submit" name = "account_info" value = "Save">
                                                 </div>
                                             </div>
                                         </form>
@@ -182,37 +197,36 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
                                         <div class="account-info-wrapper">
                                             <h4>Change Password</h4>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-lg-12 col-md-12">
-                                                <div class="billing-info">
-                                                    <label>Your Password</label>
-                                                    <input name='old_password' type="password">
+                                        <form method = "post">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <div class="billing-info">
+                                                        <label>Your Password</label>
+                                                        <input name='old_password' type="password">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12">
+                                                    <div class="billing-info">
+                                                        <label>Password</label>
+                                                        <input name='new_password' type="password">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12 col-md-12">
+                                                    <div class="billing-info">
+                                                        <label>Password Confirm</label>
+                                                        <input name='password_confirmation' type="password">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12 col-md-12">
-                                                <div class="billing-info">
-                                                    <label>Password</label>
-                                                    <input name='new_password' type="password">
+                                            <div class="billing-back-btn">
+                                                <div class="billing-back">
+                                                    <a href="#"><i class="ion-arrow-up-c"></i> back</a>
+                                                </div>
+                                                <div class="billing-btn">
+                                                    <input type="submit" name = "change_password" value = "Update">
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12 col-md-12">
-                                                <div class="billing-info">
-                                                    <label>Password Confirm</label>
-                                                    <input name='password_confirmation' type="password">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="billing-back-btn">
-                                            <div class="billing-back">
-                                                <a href="#"><i class="ion-arrow-up-c"></i> back</a>
-                                            </div>
-                                            <div class="billing-btn">
-                                                <button type="submit">
-
-                                                    Continue
-                                                </button>
-                                            </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

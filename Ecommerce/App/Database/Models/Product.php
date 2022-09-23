@@ -5,8 +5,9 @@ use App\Database\Models\Contract\HasCrud;
 
 class Product extends Model  implements HasCrud  {
     private $id,$name_en,$name_ar,$price,$product_code,$quantity,
-    $status,$details_en,$details_ar,$image,$brand_id,$subcategroy_id,
+    $status,$details_en,$details_ar,$image,$brand_id,$subcategroy_id,$category_id,
     $created_at,$updated_at;
+    private const ACTIVE = 1;
 
     /**
      * Get the value of id
@@ -288,23 +289,78 @@ class Product extends Model  implements HasCrud  {
         return $this;
     }
 
-    public function create() :bool
+    public function create() : bool
     {
-        # code...
+        return true;
     }
 
-    public function update() :bool
+    public function update() : bool
     {
-        # code...
+        return true;   
     }
 
-    public function delete() :bool
+    public function delete() : bool
     {
-        # code...
+        return true;
     }
 
     public function read() :\mysqli_result
     {
-        # code...
+        $query = "SELECT id,name_en,details_en,price,image FROM products WHERE status = ".self::ACTIVE." ORDER BY price , name_en";
+        return $this->conn->query($query);
+    }
+    public function getProductsByBrand() :\mysqli_result
+    {
+        $query = "SELECT id,name_en,details_en,price,image FROM product_details WHERE status = ".self::ACTIVE." AND brand_id = ? ORDER BY price , name_en";
+        $stmt =  $this->conn->prepare($query);
+        $stmt->bind_param('i',$this->brand_id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+    public function getProductsBySub() :\mysqli_result
+    {
+        $query = "SELECT id,name_en,details_en,price,image FROM product_details WHERE status = ".self::ACTIVE." AND subcategory_id = ? ORDER BY price , name_en";
+        $stmt =  $this->conn->prepare($query);
+        $stmt->bind_param('i',$this->subcategroy_id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    public function getProductsByCat() :\mysqli_result
+    {
+        $query = "SELECT id,name_en,details_en,price,image FROM product_details WHERE status = ".self::ACTIVE." AND category_id = ? ORDER BY price , name_en";
+        $stmt =  $this->conn->prepare($query);
+        $stmt->bind_param('i',$this->category_id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+    
+    public function find() :\mysqli_result
+    {
+        $query = "SELECT * FROM product_details WHERE status = ".self::ACTIVE." AND id = ?";
+        $stmt =  $this->conn->prepare($query);
+        $stmt->bind_param('i',$this->id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+    /**
+     * Get the value of category_id
+     */ 
+    public function getCategory_id()
+    {
+        return $this->category_id;
+    }
+
+    /**
+     * Set the value of category_id
+     *
+     * @return  self
+     */ 
+    public function setCategory_id($category_id)
+    {
+        $this->category_id = $category_id;
+
+        return $this;
     }
 }

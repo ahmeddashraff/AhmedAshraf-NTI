@@ -284,17 +284,17 @@ class User extends Model implements HasCrud {
 
     public function update() :bool
     {
-        # code...
+        return true;
     }
 
     public function delete() :bool
     {
-        # code...
+        return true;
     }
 
     public function read() :\mysqli_result
     {
-        # code...
+        return false;
     }
     public function verifyCode() 
     {
@@ -329,16 +329,7 @@ class User extends Model implements HasCrud {
         $stmt->bind_param('ss',$this->verification_code,$this->email);
         return $stmt->execute();
     }
-    public function updatePassword() :bool
-    {
-        $query = "UPDATE users SET password = ? WHERE email = ?";
-        $stmt = $this->conn->prepare($query);
-        if(! $stmt){
-            return false;
-        }
-        $stmt->bind_param('ss',$this->password,$this->email);
-        return $stmt->execute();
-    }
+
     public function updateImage() :bool
     {
         $query = "UPDATE users SET image = ? WHERE email = ?";
@@ -361,6 +352,18 @@ class User extends Model implements HasCrud {
         return $stmt->execute();   
     }
 
+    
+
+    public function updatePassword(): bool
+    {
+        $query = "UPDATE users SET password = ? WHERE email = ?";
+        $stmt = $this->conn->prepare($query);
+        if(! $stmt){
+            return false;
+        }
+        $stmt->bind_param('ss',$this->password,$this->email);
+        return $stmt->execute();   
+    }
     public function get()
     {
         $query = "SELECT * FROM users WHERE email = ? ";
