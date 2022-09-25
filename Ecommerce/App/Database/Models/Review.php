@@ -146,6 +146,17 @@ class Review extends Model  implements HasCrud  {
         return $this;
     }
 
+    public function addReview()
+    {
+        $query = "INSERT INTO reviews (product_id,user_id,rate,comment) VALUES (? , ? , ? , ?)";
+        $stmt = $this->conn->prepare($query);
+        if(! $stmt){
+            return false;
+        }
+        $stmt->bind_param('iiis',$this->product_id,$this->user_id,$this->rate,$this->comment);
+        return $stmt->execute();
+    }
+
     public function get()
     {
         $query = "SELECT

@@ -109,7 +109,7 @@ class Spec extends Model  implements HasCrud  {
 
     public function get()
     {
-        $query= "SELECT products_specs.* , specs.name_en FROM specs JOIN products_specs ON specs.id = products_specs.spec_id WHERE product_id = ?";
+        $query= "SELECT products_specs.* , specs.name FROM specs JOIN products_specs ON specs.id = products_specs.spec_id WHERE product_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param('i',$this->product_id);
         $stmt->execute();

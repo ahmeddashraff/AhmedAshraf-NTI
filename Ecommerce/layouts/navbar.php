@@ -1,3 +1,14 @@
+<?php
+
+use App\Database\Models\Category;
+use App\Database\Models\Subcategory;
+
+$categoryObject = new Category;
+$categories = $categoryObject->read()->fetch_all(MYSQLI_ASSOC);
+
+$subcategoryObject = new Subcategory;
+
+?>
     <!-- header start -->
     <header class="header-area gray-bg clearfix">
         <div class="header-bottom">
@@ -24,50 +35,20 @@
                                         <li><a href="about-us.php">about</a></li>
                                         <li class="mega-menu-position top-hover"><a href="shop.php">shop</a>
                                             <ul class="mega-menu">
+                                                <?php foreach($categories AS $category){ 
+                                                    $subcategoryObject->setCategory_id($category['id']);
+                                                    $subcategories = $subcategoryObject->getSubByCat()->fetch_all(MYSQLI_ASSOC);
+                                                ?>
                                                 <li>
                                                     <ul>
-                                                        <li class="mega-menu-title">Categories 01</li>
-                                                        <li><a href="shop.php">Aconite</a></li>
-                                                        <li><a href="shop.php">Ageratum</a></li>
-                                                        <li><a href="shop.php">Allium</a></li>
-                                                        <li><a href="shop.php">Anemone</a></li>
-                                                        <li><a href="shop.php">Angelica</a></li>
-                                                        <li><a href="shop.php">Angelonia</a></li>
+                                                        <li><a href="shop.php?cat=<?= $category['id'] ?>" class="font-weight-bold"><?= $category['name_en'] ?></a></li>
+                                                        <?php foreach($subcategories AS $subcategory) { ?>
+                                                        <li><a href="shop.php?sub=<?= $subcategory['id'] ?>"><?= $subcategory['name_en'] ?></a></li>
+                                                        <?php } ?>
+                                                       
                                                     </ul>
                                                 </li>
-                                                <li>
-                                                    <ul>
-                                                        <li class="mega-menu-title">Categories 02</li>
-                                                        <li><a href="shop.php">Balsam</a></li>
-                                                        <li><a href="shop.php">Baneberry</a></li>
-                                                        <li><a href="shop.php">Bee Balm</a></li>
-                                                        <li><a href="shop.php">Begonia</a></li>
-                                                        <li><a href="shop.php">Bellflower</a></li>
-                                                        <li><a href="shop.php">Bergenia</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li class="mega-menu-title">Categories 03</li>
-                                                        <li><a href="shop.php">Caladium</a></li>
-                                                        <li><a href="shop.php">Calendula</a></li>
-                                                        <li><a href="shop.php">Carnation</a></li>
-                                                        <li><a href="shop.php">Catmint</a></li>
-                                                        <li><a href="shop.php">Celosia</a></li>
-                                                        <li><a href="shop.php">Chives</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <ul>
-                                                        <li class="mega-menu-title">Categories 04</li>
-                                                        <li><a href="shop.php">Daffodil</a></li>
-                                                        <li><a href="shop.php">Dahlia</a></li>
-                                                        <li><a href="shop.php">Daisy</a></li>
-                                                        <li><a href="shop.php">Diascia</a></li>
-                                                        <li><a href="shop.php">Dusty Miller</a></li>
-                                                        <li><a href="shop.php">Dame’s Rocket</a></li>
-                                                    </ul>
-                                                </li>
+                                                <?php } ?>
                                             </ul>
                                         </li>
                                        
@@ -243,3 +224,5 @@
         </div>
     </header>
     <!-- header end -->
+
+    

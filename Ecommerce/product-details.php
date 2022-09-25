@@ -20,7 +20,28 @@ if($_GET && isset($_GET['product']) && is_numeric($_GET['product'])){
 }else{
     header("location:layouts/errors/404.php");die;
 }
+if($_SERVER['REQUEST_METHOD'] = "POST" && $_POST)
+{
+    if($_POST['add_review'])
+    {
+        $review = new Review;
+        $review->setProduct_id($_GET['product'])->setUser_id($_SESSION['user']->id)
+        ->setComment($_POST['review_text']);
+        if($review->addReview())
+        {
+            echo 'review is added';
+        }
+        else
+        {
+            echo 'review is not okay';
+        }
+    }
+}
+
+
 ?>
+
+
 <!-- Product Deatils Area Start -->
 <div class="product-details pt-100 pb-95">
     <div class="container">
@@ -36,9 +57,9 @@ if($_GET && isset($_GET['product']) && is_numeric($_GET['product'])){
                     <h4><?= $product->name_en ?></h4>
                     <div class="rating-review">
                         <div class="pro-dec-rating">
-                            <?php for($i = 1;$i <= $product->reviews_avg ; $i++){ ?>
+                            <?php for($i = 1;$i <= $product->reviews_average ; $i++){ ?>
                             <i class="ion-android-star-outline theme-star"></i>
-                            <?php } for ($i=1; $i <= 5-$product->reviews_avg; $i++) { ?>
+                            <?php } for ($i=1; $i <= 5-$product->reviews_average; $i++) { ?>
                             <i class="ion-android-star-outline"></i>
                             <?php } ?>
                         </div>
@@ -162,41 +183,47 @@ if($_GET && isset($_GET['product']) && is_numeric($_GET['product'])){
 
 
                     </div>
-                    <div class="ratting-form-wrapper">
-                        <h3>Add your Comments :</h3>
-                        <div class="ratting-form">
-                            <form action="#">
-                                <div class="star-box">
-                                    <h2>Rating:</h2>
-                                    <div class="ratting-star">
-                                        <i class="ion-star theme-color"></i>
-                                        <i class="ion-star theme-color"></i>
-                                        <i class="ion-star theme-color"></i>
-                                        <i class="ion-star theme-color"></i>
-                                        <i class="ion-star"></i>
-                                    </div>
+                    <?php 
+
+                            if(isset($_SESSION['user']))
+                            {
+                                echo '
+                                <div class="ratting-form-wrapper">
+                                <h3>Add your Comments :</h3>
+                                <div class="ratting-form">
+                                    <form action="#" method = "post">
+                                        <div class="star-box">
+                                            <h2>Rating:</h2>
+                                            <div class="ratting-star">
+                                                <i class="ion-star theme-color"></i>
+                                                <i class="ion-star theme-color"></i>
+                                                <i class="ion-star theme-color"></i>
+                                                <i class="ion-star theme-color"></i>
+                                                <i class="ion-star"></i>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="rating-form-style form-submit">
+                                                    <textarea name="review_text" placeholder="Message"></textarea>
+                                                    <input type="submit" name = "add_review" value="add review">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="rating-form-style mb-20">
-                                            <input placeholder="Name" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="rating-form-style mb-20">
-                                            <input placeholder="Email" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="rating-form-style form-submit">
-                                            <textarea name="message" placeholder="Message"></textarea>
-                                            <input type="submit" value="add review">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                            </div>
+                                ';
+                            }
+                            else
+                            {
+                                echo "";
+                            }
+
+                    ?>
+                    
+
+
                 </div>
             </div>
         </div>
@@ -395,3 +422,4 @@ if($_GET && isset($_GET['product']) && is_numeric($_GET['product'])){
 include "layouts/footer.php";
 include "layouts/scripts.php";
 ?>
+

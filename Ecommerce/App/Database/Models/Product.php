@@ -7,7 +7,7 @@ class Product extends Model  implements HasCrud  {
     private $id,$name_en,$name_ar,$price,$product_code,$quantity,
     $status,$details_en,$details_ar,$image,$brand_id,$subcategroy_id,$category_id,
     $created_at,$updated_at;
-    private const ACTIVE = 1;
+    private const ACTIVE = "\"available\"";
 
     /**
      * Get the value of id
@@ -289,19 +289,19 @@ class Product extends Model  implements HasCrud  {
         return $this;
     }
 
-    public function create() : bool
+    public function create() :bool
     {
-        return true;
+        # code...
     }
 
-    public function update() : bool
+    public function update() :bool
     {
-        return true;   
+        # code...
     }
 
-    public function delete() : bool
+    public function delete() :bool
     {
-        return true;
+        # code...
     }
 
     public function read() :\mysqli_result
@@ -342,6 +342,21 @@ class Product extends Model  implements HasCrud  {
         $stmt->bind_param('i',$this->id);
         $stmt->execute();
         return $stmt->get_result();
+    }
+
+
+    public function getMostRecentProducts():\mysqli_result
+    {
+        $query = "SELECT * FROM `products` ORDER BY created_at DESC LIMIT 4";
+        return $this->conn->query($query);
+    }
+
+    public function getMostOrderedProducts():\mysqli_result
+    {
+        $query = "SELECT `products`.*, `products_orders`.`product_id`, SUM(`products_orders`.`quantity`) AS 
+        `total_orders` FROM `products_orders` JOIN `products` 
+        ON `products`.`id` = `products_orders`.`product_id` GROUP BY `product_id` ORDER BY `total_orders` DESC LIMIT 4;";
+        return $this->conn->query($query);
     }
 
     /**

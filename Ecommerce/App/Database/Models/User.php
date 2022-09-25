@@ -341,14 +341,14 @@ class User extends Model implements HasCrud {
         return $stmt->execute();
     }
     
-    public function updateName(): bool
+    public function updateAccountInfo(): bool
     {
-        $query = "UPDATE users SET first_name = ? , last_name = ? WHERE email = ?";
+        $query = "UPDATE users SET first_name = ? , last_name = ?, gender = ? WHERE email = ?";
         $stmt = $this->conn->prepare($query);
         if(! $stmt){
             return false;
         }
-        $stmt->bind_param('sss',$this->first_name,$this->last_name,$this->email);
+        $stmt->bind_param('ssss',$this->first_name,$this->last_name,$this->gender,$this->email);
         return $stmt->execute();   
     }
 

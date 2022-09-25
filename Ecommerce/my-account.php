@@ -20,7 +20,7 @@ if(isset($_POST['update-image'])){
         if(empty($media->getErrors())){
             // no validaion error
             if($media->upload('assets/img/users/')){
-                if($_SESSION['user']->image != 'default.jpg'){
+                if($_SESSION['user']->image != 'default.png'){
                     $media->delete('assets/img/users/'.$_SESSION['user']->image);
                 }
                 
@@ -57,8 +57,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
     
             $_SESSION['user'] -> first_name = $_POST['first_name'];
             $_SESSION['user'] -> last_name = $_POST['last_name'];
+            $_SESSION['user'] -> gender = $_POST['gender'];
+
     
-            if($user->updateName())
+            if($user->updateAccountInfo())
             {
                 echo "okkkkk";
             }
@@ -74,24 +76,31 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
 
     if(isset($_POST['change_password']))
     {
-        $validation->setValue($_POST['old_password'] ?? "")->setValueName('password')
+        $flag = true;
+        $alert = " ";
+        $errorMessage = " ";
+        $validation->setValue($_POST['old_password'] ?? "")->setValueName('old password')
         ->required()->regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/","Wrong password");
-        $validation->setValue($_POST['new_password'] ?? "")->setValueName('password')
-        ->required()->regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/","Minimum 8 and maximum 32 characters, at least one uppercase letter, one lowercase letter, one number and one special character:")
+        $validation->setValue($_POST['new_password'] ?? "")->setValueName('new password')
+        ->required()->regex("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$/","Wrong password.")
         ->confirmed($_POST['password_confirmation']);
         $validation->setValue($_POST['password_confirmation'] ?? "")->setValueName('password confirmation');
         if(empty($validation->getErrors()))
         {
-            $user->setPassword($_POST['new_password'])->setEmail($_SESSION['user']->email);
-
-            if($user->updatePassword())
+            if(password_verify($_POST['old_password'],$_SESSION['user']->password)){
+                $user->setPassword($_POST['new_password'])->setEmail($_SESSION['user']->email);
+                if($user->updatePassword())
+                {
+                    $alert = "<p class='text-success font-weight-bold'>password is changed</p>";
+                    header('refresh:5;url=logout.php');
+                }
+                else
+                {
+                    echo " ";
+                }
+            }else
             {
-                echo "changed";
-                //el password byet3'yar 3ady, fadel details zy en yroh el login page w fe alert yzharlo
-            }
-            else
-            {
-                echo "cannot change password";
+                $errorMessage = "<p class='text-danger font-weight-bold'>wrong email or password</p>";
             }
         }
     }
@@ -117,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
                                             <form action="" method="POST" 
                                             enctype="multipart/form-data">
                                                 <?php 
-                                                    if($_SESSION['user']->image == 'default.jpg'){
+                                                    if($_SESSION['user']->image == 'default.png'){
                                                         if($_SESSION['user']->gender == 'm'){
                                                             $image = 'male.jpg';
                                                         }else{
@@ -204,20 +213,26 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $_POST){
                                                         <label>Your Password</label>
                                                         <input name='old_password' type="password">
                                                     </div>
+                                                    <?= $validation->getMessage('old password') ?>
                                                 </div>
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="billing-info">
                                                         <label>Password</label>
                                                         <input name='new_password' type="password">
                                                     </div>
+                                                    <?= $validation->getMessage('new password') ?>
+
                                                 </div>
                                                 <div class="col-lg-12 col-md-12">
                                                     <div class="billing-info">
                                                         <label>Password Confirm</label>
                                                         <input name='password_confirmation' type="password">
                                                     </div>
+                                                    <?= $validation->getMessage('password confirmation') ?>
+
                                                 </div>
                                             </div>
+                                            <?= $alert ?? "<p class='text-danger font-weight-bold'>wrong email or password</p>" ?>
                                             <div class="billing-back-btn">
                                                 <div class="billing-back">
                                                     <a href="#"><i class="ion-arrow-up-c"></i> back</a>

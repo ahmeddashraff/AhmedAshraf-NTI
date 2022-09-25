@@ -23,6 +23,6 @@ class Brand extends Model  implements HasCrud  {
 
     public function read() :\mysqli_result
     {
-        # code...
+        return $this->conn->query("SELECT id,image FROM brands where status = 1 ORDER BY name_en");
     }
 }
