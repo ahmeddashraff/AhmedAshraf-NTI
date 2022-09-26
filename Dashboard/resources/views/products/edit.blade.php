@@ -4,7 +4,20 @@
 
 @section('content')
     <div class="col-12">
-        <form action="" method="post">
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    </div>
+    <div class="col-12">
+        <form action="{{route('dashboard.products.update',$product->id)}}" method="post" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
             <div class="form-row">
                 <div class="col-6">
                     <div class="form-group">

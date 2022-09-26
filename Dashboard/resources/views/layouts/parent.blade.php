@@ -179,6 +179,19 @@
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
+                <li class="nav-item">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{Auth::user()->name}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <form  action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button class="btn"> Logout</button>
+                        </form>
+                    </div>
+                </div>
+                </li>
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -233,7 +246,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{route('dashboard.products')}}" class="nav-link active">
+                                    <a href="{{route('dashboard.products.index')}}" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>All Products</p>
                                     </a>
