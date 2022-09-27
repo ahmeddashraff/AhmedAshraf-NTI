@@ -7,7 +7,7 @@ class Product extends Model  implements HasCrud  {
     private $id,$name_en,$name_ar,$price,$product_code,$quantity,
     $status,$details_en,$details_ar,$image,$brand_id,$subcategroy_id,$category_id,
     $created_at,$updated_at;
-    private const ACTIVE = "\"available\"";
+    private const ACTIVE = 1;
 
     /**
      * Get the value of id
@@ -311,7 +311,7 @@ class Product extends Model  implements HasCrud  {
     }
     public function getProductsByBrand() :\mysqli_result
     {
-        $query = "SELECT id,name_en,details_en,price,image FROM product_details WHERE status = ".self::ACTIVE." AND brand_id = ? ORDER BY price , name_en";
+        $query = "SELECT id,name_en,details_en,price,image FROM products WHERE status = ".self::ACTIVE." AND brand_id = ? ORDER BY price , name_en";
         $stmt =  $this->conn->prepare($query);
         $stmt->bind_param('i',$this->brand_id);
         $stmt->execute();
@@ -319,7 +319,7 @@ class Product extends Model  implements HasCrud  {
     }
     public function getProductsBySub() :\mysqli_result
     {
-        $query = "SELECT id,name_en,details_en,price,image FROM product_details WHERE status = ".self::ACTIVE." AND subcategory_id = ? ORDER BY price , name_en";
+        $query = "SELECT id,name_en,details_en,price,image FROM products WHERE status = ".self::ACTIVE." AND subcategory_id = ? ORDER BY price , name_en";
         $stmt =  $this->conn->prepare($query);
         $stmt->bind_param('i',$this->subcategroy_id);
         $stmt->execute();
@@ -328,7 +328,7 @@ class Product extends Model  implements HasCrud  {
 
     public function getProductsByCat() :\mysqli_result
     {
-        $query = "SELECT id,name_en,details_en,price,image FROM product_details WHERE status = ".self::ACTIVE." AND category_id = ? ORDER BY price , name_en";
+        $query = "SELECT id,name_en,details_en,price,image FROM products WHERE status = ".self::ACTIVE." AND category_id = ? ORDER BY price , name_en";
         $stmt =  $this->conn->prepare($query);
         $stmt->bind_param('i',$this->category_id);
         $stmt->execute();
@@ -337,7 +337,21 @@ class Product extends Model  implements HasCrud  {
     
     public function find() :\mysqli_result
     {
-        $query = "SELECT * FROM product_details WHERE status = ".self::ACTIVE." AND id = ?";
+        $query = "SELECT
+                    `products`.*, 
+                    `subcategories`.`name_en` AS `subcategory_name_en`,
+                    `brands` . `name_en` AS `brand_name_en`,
+                    `categories`.`id` AS `category_id`,
+                    `categories`.`name_en` AS `category_name_en`,
+                    COUNT(`reviews`. `product_id`) AS `reviews_count`,
+                    ROUND (IF(AVG(`reviews`. `rate`) IS NULL, 0, AVG(`reviews` . `rate`))) AS `reviews_available`
+                    FROM `products`
+                    LEFT JOIN `brands` ON `brands`. `id` = `products`. `brand_id`
+                    LEFT JOIN `subcategories` ON `subcategories` . `id` = `products` . `subcategory_id`
+                    LEFT JOIN `categories` ON `categories`.`id` = `subcategories`.`category_id`
+                    LEFT JOIN `reviews` ON `products`.`id`= `reviews`. `product_id`
+                    WHERE `products`.`status` =".self::ACTIVE."AND `products`.`id` = ?
+                    GROUP BY `products`.`id`";
         $stmt =  $this->conn->prepare($query);
         $stmt->bind_param('i',$this->id);
         $stmt->execute();
